@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geography Study Material</title>
+    <style>
+        /* बॉडी स्टाइल */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #f06, #ffcc00);
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        /* मुख्य कंटेनर */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        /* शीर्षक */
+        h1 {
+            text-align: center;
+            color: #34495e;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        /* कैटिगरी सूची */
+        .category-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .category {
+            background: linear-gradient(145deg, #ecf0f1, #ffffff);
+            border-radius: 10px;
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1), -3px -3px 8px rgba(255, 255, 255, 0.6);
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+            width: calc(50% - 20px);
+            text-align: center;
+            padding: 20px;
+            cursor: pointer;
+            position: relative;
+            font-weight: bold;
+        }
+
+        .category:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(145deg, #e74c3c, #f39c12);
+        }
+
+        /* लिंक स्टाइल */
+        .category a {
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: bold;
+            font-size: 1.4rem;
+            display: block;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .category a:hover {
+            color: #ffffff;
+        }
+
+        /* विवरण */
+        .category p {
+            margin: 0;
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.5;
+            transition: color 0.3s;
+        }
+
+        .category:hover p {
+            color: #ffffff;
+        }
+
+        /* फुटर */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        /* रेस्पॉन्सिव डिज़ाइन */
+        @media (max-width: 768px) {
+            .category {
+                width: calc(100% - 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- शीर्षक और मार्गदर्शन -->
+        <h1>Geography Study Material</h1>
+        <h2>Explore topics to enhance your knowledge</h2>
+
+        <!-- कैटिगरी सूची -->
+        <ul class="category-list">
+            <li class="category">
+                <a href="physical-geography.html">Physical Geography</a>
+                <p>Learn about Earth's physical features like mountains, rivers, and oceans.</p>
+            </li>
+            <li class="category">
+                <a href="human-geography.html">Human Geography</a>
+                <p>Understand population, culture, and urban development.</p>
+            </li>
+            <li class="category">
+                <a href="economic-geography.html">Economic Geography</a>
+                <p>Discover the role of trade, industries, and agriculture.</p>
+            </li>
+            <li class="category">
+                <a href="climatology.html">Climatology</a>
+                <p>Study climate systems and weather patterns across the globe.</p>
+            </li>
+            <li class="category">
+                <a href="environmental-geography.html">Environmental Geography</a>
+                <p>Learn about ecosystems, conservation, and environmental challenges.</p>
+            </li>
+        </ul>
+    </div>
+    <footer>
+        © 2025 Geography Study Hub | Empowering Knowledge.
+    </footer>
+</body>
+</html>
