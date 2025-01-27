@@ -66,8 +66,16 @@
       color: #374151;
       margin: 10px 0;
       display: flex;
+      flex-direction: column;
+    }
+    #wordList p span {
+      margin-right: 10px;
+    }
+    .copy-group {
+      display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-top: 5px;
     }
     #wordInput {
       width: calc(100% - 140px);
@@ -146,9 +154,14 @@
       outputDiv.innerHTML = `
         ${uniqueCombinations.map((combo, index) => ` 
           <div>
-            <span>${index + 1}. ${combo}</span>
-            <span>${combo.replace(/ /g, '_')}</span>
-            <button onclick="copyToClipboard('${combo}')">Copy</button>
+            <div class="copy-group">
+              <span>${index + 1}. ${combo}</span>
+              <button onclick="copyToClipboard('${combo}')">Copy (Space)</button>
+            </div>
+            <div class="copy-group">
+              <span>${combo.replace(/ /g, '_')}</span>
+              <button onclick="copyToClipboard('${combo.replace(/ /g, '_')}')">Copy (Underscore)</button>
+            </div>
           </div>
         `).join('')}`;
     }
