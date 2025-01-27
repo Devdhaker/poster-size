@@ -112,21 +112,19 @@
   <script>
     const words = [];
 
-    // Add a word to the list
     function addWord() {
       const wordInput = document.getElementById('wordInput');
       const word = wordInput.value.trim();
       if (word) {
         words.push(word);
         updateWordList();
-        wordInput.value = ''; // Clear input
-        wordInput.focus(); // Focus back on input
+        wordInput.value = '';
+        wordInput.focus();
       } else {
         alert('Please enter a valid word!');
       }
     }
 
-    // Update the word list display
     function updateWordList() {
       const wordList = document.getElementById('wordList');
       if (words.length > 0) {
@@ -136,7 +134,6 @@
       }
     }
 
-    // Generate unique combinations
     function generateCombinations() {
       if (words.length < 2) {
         alert('Please add at least 2 words to generate combinations!');
@@ -147,26 +144,25 @@
 
       const outputDiv = document.getElementById('output');
       outputDiv.innerHTML = `
-        ${uniqueCombinations.map(combo => `
+        ${uniqueCombinations.map((combo, index) => `
           <div>
-            <span>${combo}</span>
+            <span>${index + 1}. ${combo}</span>
             <button onclick="copyToClipboard('${combo}')">Copy</button>
           </div>
         `).join('')}
       `;
     }
 
-    // Generate combinations with 2 words joined and others separate
     function generateCustomCombinations(array) {
       const result = [];
-      const seen = new Set(); // To avoid duplicates
+      const seen = new Set();
 
       for (let i = 0; i < array.length; i++) {
         for (let j = 0; j < array.length; j++) {
           if (i !== j) {
-            const combined = array[i] + array[j]; // Join 2 words
-            const remaining = array.filter((_, index) => index !== i && index !== j); // Remaining words
-            const permutations = permute(remaining); // Get permutations of remaining words
+            const combined = array[i] + array[j];
+            const remaining = array.filter((_, index) => index !== i && index !== j);
+            const permutations = permute(remaining);
 
             for (const perm of permutations) {
               const combination = [combined, ...perm].join(' ');
@@ -181,7 +177,6 @@
       return result;
     }
 
-    // Generate all permutations of the array
     function permute(array) {
       if (array.length === 0) return [[]];
       if (array.length === 1) return [array];
@@ -197,7 +192,6 @@
       return result;
     }
 
-    // Copy text to clipboard
     function copyToClipboard(text) {
       navigator.clipboard.writeText(text).then(() => {
         alert(`Copied: ${text}`);
@@ -206,7 +200,6 @@
       });
     }
 
-    // Add word on Enter key press
     document.getElementById('wordInput').addEventListener('keypress', function(event) {
       if (event.key === 'Enter') {
         addWord();
