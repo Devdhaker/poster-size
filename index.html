@@ -40,6 +40,20 @@
     input:focus {
       border-color: #2563eb;
       box-shadow: 0 0 4px rgba(37, 99, 235, 0.5);
+      button {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: white;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
     }
     button {
       background-color: #2563eb;
@@ -98,7 +112,7 @@
 </head>
 <body>
   <h1>2-Words Combination Generator</h1>
-  
+  <button onclick="window.location.href='page.html';">focus combination</button>
   <div class="container">
     <label for="wordInput">Enter a Word:</label>
     <div class="button-group">
