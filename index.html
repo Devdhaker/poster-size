@@ -61,10 +61,13 @@
       max-width: 600px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    #wordList p, #output p {
+    #wordList p, #output div {
       font-size: 1rem;
       color: #374151;
-      margin: 5px 0;
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     #wordInput {
       width: calc(100% - 140px);
@@ -144,8 +147,12 @@
 
       const outputDiv = document.getElementById('output');
       outputDiv.innerHTML = `
-        <h3>Unique Combinations:</h3>
-        ${uniqueCombinations.map(combo => `<p>${combo}</p>`).join('')}
+        ${uniqueCombinations.map(combo => `
+          <div>
+            <span>${combo}</span>
+            <button onclick="copyToClipboard('${combo}')">Copy</button>
+          </div>
+        `).join('')}
       `;
     }
 
@@ -188,6 +195,15 @@
         }
       }
       return result;
+    }
+
+    // Copy text to clipboard
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert(`Copied: ${text}`);
+      }).catch(err => {
+        alert('Failed to copy text: ', err);
+      });
     }
 
     // Add word on Enter key press
