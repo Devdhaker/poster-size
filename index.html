@@ -3,234 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2-Words Combination Generator</title>
+  <title>Dynamic Poster Upload and Resize</title>
   <style>
-    /* Base Styles */
     body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f3f4f6;
-      color: #111827;
+      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-    }
-    h1, h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    h1 {
-      font-size: 2.5rem;
-      color: #2563eb;
-    }
-    h2 {
-      font-size: 1.5rem;
-      color: #4b5563;
-    }
-    input, button {
-      padding: 10px;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-      outline: none;
-      margin: 5px 0;
-    }
-    input:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 4px rgba(37, 99, 235, 0.5);
-      button {
-      padding: 10px 20px;
-      font-size: 16px;
-      color: white;
-      background-color: #007BFF;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      background-color: #f0f0f0;
+      padding: 20px;
     }
 
-    button:hover {
-      background-color: #0056b3;
+    h1 {
+      color: #333;
     }
+
+    .poster-container {
+      width: 300px;
+      height: 400px;
+      border: 2px solid #ddd;
+      overflow: hidden;
+      position: relative;
+      margin-top: 20px;
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    button {
-      background-color: #2563eb;
-      color: white;
-      cursor: pointer;
-      border: none;
-      transition: all 0.3s;
-    }
-    button:hover {
-      background-color: #1d4ed8;
-    }
-    #wordList, #output {
-      background: white;
-      border: 1px solid #d1d5db;
+
+    #optimizedPoster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       border-radius: 8px;
-      padding: 15px;
-      margin-top: 10px;
-      width: 100%;
-      max-width: 600px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    #wordList p, #output div {
-      font-size: 1rem;
-      color: #374151;
-      margin: 10px 0;
-      display: flex;
-      flex-direction: column;
+
+    input[type="file"], select, input[type="number"] {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
-    #wordList p span {
-      margin-right: 10px;
+
+    .download-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
     }
-    .copy-group {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 5px;
-    }
-    #wordInput {
-      width: calc(100% - 140px);
-      max-width: 600px;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 90%;
-      max-width: 600px;
-    }
-    .button-group {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      width: 100%;
+
+    .download-btn:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h1>2-Words Combination Generator</h1>
-  <button onclick="window.location.href='page.html';">focus combination</button>
-  <div class="container">
-    <label for="wordInput">Enter a Word:</label>
-    <div class="button-group">
-      <input type="text" id="wordInput" placeholder="Enter a word and press Enter">
-      <button onclick="addWord()">Add</button>
-    </div>
-    
-    <h2>Words List:</h2>
-    <div id="wordList">
-      <p>No words added yet.</p>
-    </div>
-    
-    <button onclick="generateCombinations()">Generate Combinations</button>
-    
-    <h2>Unique Combinations:</h2>
-    <div id="output"></div>
+  <h1>Upload and Optimize Your Poster</h1>
+  <input type="file" id="posterInput" accept="image/*">
+
+  <label for="customWidth">Width (px):</label>
+  <input type="number" id="customWidth" placeholder="Enter width">
+
+  <label for="customHeight">Height (px):</label>
+  <input type="number" id="customHeight" placeholder="Enter height">
+
+  <button id="setSizeButton">Set Custom Size</button>
+
+  <div class="poster-container" id="posterContainer">
+    <canvas id="posterCanvas" width="300" height="400"></canvas>
   </div>
-  
+  <button class="download-btn" id="downloadButton" style="display: none;">Download Poster</button>
+
   <script>
-    const words = [];
+    const canvas = document.getElementById('posterCanvas');
+    const ctx = canvas.getContext('2d');
+    const imgElement = new Image();
 
-    function addWord() {
-      const wordInput = document.getElementById('wordInput');
-      const word = wordInput.value.trim();
-      if (word) {
-        words.push(word);
-        updateWordList();
-        wordInput.value = '';
-        wordInput.focus();
-      } else {
-        alert('Please enter a valid word!');
+    document.getElementById('posterInput').addEventListener('change', function (event) {
+      const file = event.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          imgElement.src = e.target.result;
+          imgElement.onload = function () {
+            const width = canvas.width;
+            const height = canvas.height;
+            ctx.clearRect(0, 0, width, height);
+            ctx.drawImage(imgElement, 0, 0, width, height);
+            document.getElementById('downloadButton').style.display = 'block';
+          };
+        };
+
+        reader.readAsDataURL(file);
       }
-    }
+    });
 
-    function updateWordList() {
-      const wordList = document.getElementById('wordList');
-      if (words.length > 0) {
-        wordList.innerHTML = words.map(word => `<p>${word}</p>`).join('');
-      } else {
-        wordList.innerHTML = `<p>No words added yet.</p>`;
-      }
-    }
+    document.getElementById('setSizeButton').addEventListener('click', function () {
+      const width = document.getElementById('customWidth').value;
+      const height = document.getElementById('customHeight').value;
 
-    function generateCombinations() {
-      if (words.length < 2) {
-        alert('Please add at least 2 words to generate combinations!');
-        return;
-      }
+      if (width && height) {
+        canvas.width = parseInt(width);
+        canvas.height = parseInt(height);
 
-      const uniqueCombinations = generateCustomCombinations(words);
-
-      const outputDiv = document.getElementById('output');
-      outputDiv.innerHTML = `
-        ${uniqueCombinations.map((combo, index) => ` 
-          <div>
-            <div class="copy-group">
-              <span>${index + 1}. ${combo}</span>
-              <button onclick="copyToClipboard('${combo}')">Copy (Space)</button>
-            </div>
-            <div class="copy-group">
-              <span>${combo.replace(/ /g, '_')}</span>
-              <button onclick="copyToClipboard('${combo.replace(/ /g, '_')}')">Copy (Underscore)</button>
-            </div>
-          </div>
-        `).join('')}`;
-    }
-
-    function generateCustomCombinations(array) {
-      const result = [];
-      const seen = new Set();
-
-      for (let i = 0; i < array.length; i++) {
-        for (let j = 0; j < array.length; j++) {
-          if (i !== j) {
-            const combined = array[i] + array[j];
-            const remaining = array.filter((_, index) => index !== i && index !== j);
-            const permutations = permute(remaining);
-
-            for (const perm of permutations) {
-              const combination = [combined, ...perm].join(' ');
-              if (!seen.has(combination)) {
-                seen.add(combination);
-                result.push(combination);
-              }
-            }
-          }
+        // Redraw the image with the new canvas size
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (imgElement.src) {
+          ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
         }
+      } else {
+        alert('Please enter both width and height values.');
       }
-      return result;
-    }
+    });
 
-    function permute(array) {
-      if (array.length === 0) return [[]];
-      if (array.length === 1) return [array];
-      const result = [];
-      for (let i = 0; i < array.length; i++) {
-        const current = array[i];
-        const remaining = array.slice(0, i).concat(array.slice(i + 1));
-        const remainingPermutations = permute(remaining);
-        for (const perm of remainingPermutations) {
-          result.push([current, ...perm]);
-        }
-      }
-      return result;
-    }
-
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        alert(`Copied: ${text}`);
-      }).catch(err => {
-        alert('Failed to copy text: ', err);
-      });
-    }
-
-    document.getElementById('wordInput').addEventListener('keypress', function(event) {
-      if (event.key === 'Enter') {
-        addWord();
-      }
+    document.getElementById('downloadButton').addEventListener('click', function () {
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/jpeg');
+      link.download = 'optimized-poster.jpg';
+      link.click();
     });
   </script>
 </body>
