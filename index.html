@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Image Resizer - 720x400px</title>
+  <title>Image Resizer - JPG 720x400px</title>
   <style>
     body { background: #121212; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
     input { margin: 20px; }
@@ -11,7 +11,7 @@
   </style>
 </head>
 <body>
-  <h1>Resize Images to 720×400 px</h1>
+  <h1>Resize Images to 720×400 px (JPG)</h1>
   <input type="file" id="imageInput" multiple accept="image/*" />
   <br />
   <button class="btn" onclick="processImages()">Resize & Download</button>
@@ -41,10 +41,10 @@
 
             canvas.toBlob(function(blob) {
               const link = document.createElement('a');
-              link.download = `img${index + 1}.webp`;
+              link.download = `img${index + 1}.jpg`;
               link.href = URL.createObjectURL(blob);
               link.click();
-            }, 'image/webp', 0.8); // 80% quality
+            }, 'image/jpeg', 0.9); // 90% quality
           };
           img.src = e.target.result;
         };
